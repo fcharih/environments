@@ -1,4 +1,3 @@
-source $HOME/.bashrc
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -98,9 +97,9 @@ export TERM=xterm-256color
 alias vim='nvim'
 alias ls='exa'
 alias vimo='vim $(fzf)'
-alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs "$@" -nw'
-alias ed='/Applications/Emacs.app/Contents/MacOS/Emacs "$@" --daemon'
-alias ec='emacsclient -ct'
+#alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs "$@" -nw'
+#alias ed='/Applications/Emacs.app/Contents/MacOS/Emacs "$@" --daemon'
+#alias ec='emacsclient -ct'
 
 # Functions
 tunnel() {
@@ -173,7 +172,6 @@ echo " /\\_/\\   DO IT FOR  /\\_/\\
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
 export PATH=/usr/local/bin:$PATH
-export PYTHONPATH="/home/fcharih/opt/anaconda3/bin/python3.7"
 
 eval "$(starship init zsh)"
 

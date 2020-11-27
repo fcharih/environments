@@ -26,6 +26,8 @@ call plug#begin('~/dotfiles/vim/.vim/plugged')
   Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
   Plug 'leafgarland/typescript-vim'
   Plug 'peitalin/vim-jsx-typescript'
+  Plug 'chrisbra/Colorizer'
+  Plug 'moll/vim-bbye'
 call plug#end()
 
 
@@ -187,3 +189,10 @@ autocmd BufWritePre *.ts Prettier
 autocmd BufWritePre *.tsx Prettier
 autocmd BufWritePre *.css Prettier
 autocmd BufWritePre *.scss Prettier
+
+
+function! g:BuffetSetCustomColors()
+    hi! BuffetCurrentBuffer cterm=NONE ctermbg=235 ctermfg=grey guibg=black guifg=#000000
+    hi! BuffetBuffer cterm=NONE ctermbg=237 ctermfg=grey guibg=black guifg=#000000
+    hi! BuffetTab ctermbg=237 ctermfg=grey guibg=grey guifg=grey
+endfunction
