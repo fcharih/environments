@@ -1,0 +1,76 @@
+#! /usr/bin/env python3
+import argparse
+import subprocess as sp
+
+
+def format_time(time_in_hours):
+    MINUTES_PER_HOUR_TENTH = 6
+
+    hours_requested = int(time_in_hours)
+    minutes_requested = int(MINUTES_PER_HOUR_TENTH * (time_in_hours % 1) * 10)
+
+    if minutes_requested < 10:
+        minutes_requested = "0" + str(minutes_requested)
+
+    return f"{hours_requested}:{minutes_requested}:00"
+
+CPUS_PER_NODE_DICT = {
+    "cedar": [32, 24, 32, 48],
+    "graham": [16, 28, 32, 40, 44, 64],
+    "beluga": [40]
+}
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Creates submission scripts for jobs to submit to the scheduler.")
+    parser.add_argument("-c", "--command", type=str, nargs="*", required=True, help="The command to run.")
+    parser.add_argument("-t", "--time", type=float, required=True, help="Time for the jobs in hours (eg. 1 for 1h, 10.5 for 10h30).")
+    parser.add_argument("-m", "--memory", type=int, required=True, help="Memory requested PER TASK (process) in GB (eg. 16 for 16 GB, 0.5 for 500 MB).")
+    parser.add_argument("-a", "--account", type=str, required=False, default="ctb-jrgreen", help="Account to submit the job under (default: ctb-jrgreen).")
+    parser.add_argument("-p", "--process", type=int, required=False, default=1, help="Number of tasks/processes per node (default: 1).")
+    parser.add_argument("-n", "--n_cpus", type=int, required=False, default=0, help="Number of CPUs per task (default: 0 for an entire node).")
+    parser.add_argument("-o", "--nodes", type=int, required=False, default=1, help="Number of nodes.")
+    parser.add_argument("-d", "--disable_timer", action="store_true", help="To disable the timer.")
+    args = parser.parse_args()
+
+    CLUSTER_NAME = sp.check_output("hostname").decode("utf-8").split(".")[1]
+    CPUS_PER_NODE = CPUS_PER_NODE_DICT[CLUSTER_NAME]
+
+    time_requested = format_time(args.time)
+    submission_account = args.account
+    process_per_node = args.process
+
+    if args.nodes != 1:
+        nodes = args.nodes
+        cpus = max(CPUS_PER_NODE)
+        memory_requested = "0G"
+    elif args.n_cpus == 0:
+        nodes = 1
+        cpus = args.n_cpus
+        memory_requested = str(args.memory) + "G"
+    else:
+        nodes = 1
+        cpus = args.n_cpus
+        memory_requested = str(args.memory) + "G"
+
+    print(cpus)
+
+    timer = "/cvmfs/soft.computecanada.ca/nix/var/nix/profiles/16.09/bin/time -v " if not args.disable_timer else ""
+
+    program = args.command[0].split("/")[-1]
+    arguments = " ".join(args.command[1:])
+
+    SUBMISSION_SCRIPT_TEMPLATE = (
+        f"#!/bin/bash\n"
+        f"#SBATCH --time={time_requested}\n"
+        f"#SBATCH --account={submission_account}\n"
+        f"#SBATCH --nodes={nodes}\n"
+        f"#SBATCH --ntasks-per-node={process_per_node}\n"
+        f"#SBATCH --cpus-per-task={cpus}\n"
+        f"#SBATCH --mem={memory_requested}\n"
+        f"#SBATCH --output=/home/fcharih/scratch/logs/{program}-%j.out\n"
+        f"{timer} {program} {arguments}"
+    )
+
+    print(SUBMISSION_SCRIPT_TEMPLATE)
