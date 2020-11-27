@@ -26,6 +26,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Creates submission scripts for jobs to submit to the scheduler.")
     parser.add_argument("-c", "--command", type=str, nargs="*", required=True, help="The command to run.")
     parser.add_argument("-t", "--time", type=float, required=True, help="Time for the jobs in hours (eg. 1 for 1h, 10.5 for 10h30).")
+    parser.add_argument("--task_name", type=str, required=False, help="Name for the task (default: <name of command>).")
     parser.add_argument("-m", "--memory", type=int, required=True, help="Memory requested PER TASK (process) in GB (eg. 16 for 16 GB, 0.5 for 500 MB).")
     parser.add_argument("-a", "--account", type=str, required=False, default="ctb-jrgreen", help="Account to submit the job under (default: ctb-jrgreen).")
     parser.add_argument("-p", "--process", type=int, required=False, default=1, help="Number of tasks/processes per node (default: 1).")
@@ -54,12 +55,14 @@ if __name__ == "__main__":
         cpus = args.n_cpus
         memory_requested = str(args.memory) + "G"
 
-    timer = "/cvmfs/soft.computecanada.ca/nix/var/nix/profiles/16.09/bin/time -v " if not args.disable_timer else ""
+    timer = "/cvmfs/soft.computecanada.ca/nix/var/nix/profiles/16.09/bin/time -v" if not args.disable_timer else ""
 
+    command = args.command[0]
     program = args.command[0].split("/")[-1]
     arguments = " ".join(args.command[1:])
+    task_name = args.task_name.replace(" ", "_") if args.task_name else program.split('.')[0].lstrip("./")
 
-    SUBMISSION_SCRIPT_TEMPLATE = (
+    SUBMISSION_SCRIPT = (
         f"#!/bin/bash\n"
         f"#SBATCH --time={time_requested}\n"
         f"#SBATCH --account={submission_account}\n"
@@ -67,8 +70,12 @@ if __name__ == "__main__":
         f"#SBATCH --ntasks-per-node={process_per_node}\n"
         f"#SBATCH --cpus-per-task={cpus}\n"
         f"#SBATCH --mem={memory_requested}\n"
-        f"#SBATCH --output=/home/fcharih/scratch/logs/{program}-%j.out\n"
-        f"{timer} {program} {arguments}"
+        f"#SBATCH --output=/home/fcharih/scratch/logs/{task_name}-%j.out\n"
+        f"{timer} {command} {arguments}"
     )
 
-    print(SUBMISSION_SCRIPT_TEMPLATE)
+    print("Created the script below:\n=======================================================================")
+    print(SUBMISSION_SCRIPT)
+    print("=======================================================================")
+    with open(f"launch_{task_name}.sh", "w") as launch_script:
+        launch_script.write(SUBMISSION_SCRIPT)
