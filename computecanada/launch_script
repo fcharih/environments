@@ -33,6 +33,8 @@ if __name__ == "__main__":
     parser.add_argument("-n", "--n_cpus", type=int, required=False, default=0, help="Number of CPUs per task (default: 0 for an entire node).")
     parser.add_argument("-o", "--nodes", type=int, required=False, default=1, help="Number of nodes.")
     parser.add_argument("-d", "--disable_timer", action="store_true", help="To disable the timer.")
+    parser.add_argument("--modules", nargs="*", required=False, help="Modules to be loaded to run the script.")
+    parser.add_argument("--environment", type=str, required=False, help="Path to virtual environment")
     args = parser.parse_args()
 
     CLUSTER_NAME = sp.check_output("hostname").decode("utf-8").split(".")[1]
@@ -62,7 +64,8 @@ if __name__ == "__main__":
     arguments = " ".join(args.command[1:])
     task_name = args.task_name.replace(" ", "_") if args.task_name else program.split('.')[0].lstrip("./")
 
-    SUBMISSION_SCRIPT = (
+
+    submission_script = (
         f"#!/bin/bash\n"
         f"#SBATCH --time={time_requested}\n"
         f"#SBATCH --account={submission_account}\n"
@@ -71,11 +74,19 @@ if __name__ == "__main__":
         f"#SBATCH --cpus-per-task={cpus}\n"
         f"#SBATCH --mem={memory_requested}\n"
         f"#SBATCH --output=/home/fcharih/scratch/logs/{task_name}-%j.out\n"
-        f"{timer} {command} {arguments}"
     )
 
+    if args.modules:
+        for module in args.modules:
+            submission_script += f"module load {module}\n"
+
+    if args.environment:
+        submission_script += f"source {args.environment}/bin/activate\n"
+
+    submission_script += f"{timer} {command} {arguments}\n"
+
     print("Created the script below:\n=======================================================================")
-    print(SUBMISSION_SCRIPT)
+    print(submission_script)
     print("=======================================================================")
     with open(f"launch_{task_name}.sh", "w") as launch_script:
-        launch_script.write(SUBMISSION_SCRIPT)
+        launch_script.write(submission_script)
