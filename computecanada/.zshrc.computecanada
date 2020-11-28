@@ -1,0 +1,14 @@
+module load openmpi/2.1.1
+module load scipy-stack/2019a
+module load cuda/8.0.44
+module load miniconda3
+module load python/3.8
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.8.0/lib
+export LS_OPTIONS='--color=auto'
+eval "$(dircolors -b)"
+alias ls='ls $LS_OPTIONS'
+export LIBRARY_PATH="/usr/lib/nvidia-current:$LIBRARY_PATH"
+export PATH=$HOME/neovim/bin:$HOME/local/bin:$PATH
+alias vim="nvim"
+source $HOME/environments/dotfiles/.zshrc
+source $LMOD_PKG/init/zsh
