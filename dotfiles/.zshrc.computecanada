@@ -27,3 +27,5 @@ alias ls='ls $LS_OPTIONS'
 export LIBRARY_PATH="/usr/lib/nvidia-current:$LIBRARY_PATH"
 export PATH=$HOME/neovim/bin:$HOME/local/bin:$PATH
 alias vim="nvim"
+
+source $HOME/environments/dotfiles/.zshrc
