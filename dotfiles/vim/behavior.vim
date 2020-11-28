@@ -21,5 +21,12 @@ autocmd FileType c setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType java setlocal ts=4 sts=4 sw=4 expandtab
 autocmd FileType cpp setlocal ts=4 sts=4 sw=4 expandtab
 
-
 set clipboard=unnamed
+
+" Add shebang by default
+augroup Shebang
+  autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python3\<nl>\"|$
+  autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: None -*-\<nl>\"|$
+  autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
+  autocmd BufNewFile *.\(cc\|hh\) 0put =\"//\<nl>// \".expand(\"<afile>:t\").\" -- \<nl>//\<nl>\"|2|start!
+augroup END

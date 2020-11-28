@@ -113,7 +113,7 @@ if __name__ == "__main__":
     final_args = []
     for i, datafile in enumerate(command[1:]):
         filepath = os.path.abspath(datafile)
-        if os.path.exists(filepath) and not args.copy_disabled:
+        if os.path.isfile(filepath) and not args.copy_disabled:
             new_file_name = os.path.join(job_dir, os.path.basename(datafile))
             print(f"Moving {filepath} to {new_file_name}...")
             shutil.copyfile(filepath, new_file_name)
