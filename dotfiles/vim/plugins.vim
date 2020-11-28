@@ -1,10 +1,10 @@
-call plug#begin('~/dotfiles/vim/.vim/plugged')
+call plug#begin('~/environments/dotfiles/vim/.vim/plugged')
   Plug 'YorickPeterse/happy_hacking.vim'
   Plug 'vim-airline/vim-airline'
   Plug 'rakr/vim-two-firewatch'
   Plug 'morhetz/gruvbox'
   Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install'}
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim' " Fuzzyfinder
   Plug 'townk/vim-autoclose'
@@ -32,6 +32,24 @@ call plug#end()
 
 
 """""""""""""" coc.nvim """""""""""""""""
+let g:coc_global_extensions = [
+      \"coc-snippets",
+      \"coc-scssmodules",
+      \"coc-prettier",
+      \"coc-marketplace",
+      \"coc-git",
+      \"coc-explorer",
+      \"coc-yaml",
+      \"coc-tsserver",
+      \"coc-toml",
+      \"coc-rust-analyzer",
+      \"coc-rls",
+      \"coc-python",
+      \"coc-json",
+      \"coc-css",
+      \"coc-clangd",
+      \"coc-bibtex"
+      \]
 set hidden
 
 " Some servers have issues with backup files, see #649.
