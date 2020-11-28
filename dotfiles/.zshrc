@@ -58,5 +58,4 @@ push_to_cubic() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
 export PATH=/usr/local/bin:$PATH
-eval "$(starship init zsh)"
 alias fd=fdfind

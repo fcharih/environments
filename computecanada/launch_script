@@ -1,7 +1,13 @@
 #! /usr/bin/env python3
 import argparse
+import os
 import subprocess as sp
 
+CLUSTER_NAME = sp.check_output("hostname").decode("utf-8").split(".")[1]
+HOME_DIR = os.path.expanduser("~")
+
+PATH_TO_LOGS = f"{HOME_DIR}/scratch/logs"
+PATH_TO_LAUNCH_SCRIPTS = f"{HOME_DIR}/scratch/launch"
 
 def format_time(time_in_hours):
     MINUTES_PER_HOUR_TENTH = 6
@@ -37,7 +43,6 @@ if __name__ == "__main__":
     parser.add_argument("--environment", type=str, required=False, help="Path to virtual environment")
     args = parser.parse_args()
 
-    CLUSTER_NAME = sp.check_output("hostname").decode("utf-8").split(".")[1]
     CPUS_PER_NODE = CPUS_PER_NODE_DICT[CLUSTER_NAME]
 
     time_requested = format_time(args.time)
@@ -48,10 +53,6 @@ if __name__ == "__main__":
         nodes = args.nodes
         cpus = max(CPUS_PER_NODE)
         memory_requested = "0G"
-    elif args.n_cpus == 0:
-        nodes = 1
-        cpus = args.n_cpus
-        memory_requested = str(args.memory) + "G"
     else:
         nodes = 1
         cpus = args.n_cpus
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         f"#SBATCH --ntasks-per-node={process_per_node}\n"
         f"#SBATCH --cpus-per-task={cpus}\n"
         f"#SBATCH --mem={memory_requested}\n"
-        f"#SBATCH --output=/home/fcharih/scratch/logs/{task_name}-%j.out\n"
+        f"#SBATCH --output={PATH_TO_LOGS}/{task_name}-%j.out\n"
     )
 
     if args.modules:
@@ -88,5 +89,11 @@ if __name__ == "__main__":
     print("Created the script below:\n=======================================================================")
     print(submission_script)
     print("=======================================================================")
-    with open(f"launch_{task_name}.sh", "w") as launch_script:
+
+    launch_script_path = f"{PATH_TO_LAUNCH_SCRIPTS}/launch_{task_name}.sh"
+
+    if os.path.exists(launch_script_path):
+        launch_script_path = launch_script_path.rstrip(".sh") + "_copy" + ".sh"
+
+    with open(launch_script_path, "w") as launch_script:
         launch_script.write(submission_script)

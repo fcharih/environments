@@ -1,3 +1,4 @@
+source $LMOD_PKG/init/zsh
 if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
@@ -29,3 +30,4 @@ export PATH=$HOME/neovim/bin:$HOME/local/bin:$PATH
 alias vim="nvim"
 
 source $HOME/environments/dotfiles/.zshrc
+
