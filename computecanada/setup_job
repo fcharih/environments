@@ -1,9 +1,18 @@
 #! /usr/bin/env python3
 import argparse
+import shutil
 import os
 import subprocess as sp
 
-CLUSTER_NAME = sp.check_output("hostname").decode("utf-8").split(".")[1]
+HOSTNAME = sp.check_output("hostname").decode("utf-8")
+
+if "gra" in HOSTNAME:
+    CLUSTER_NAME = "graham"
+elif "ced" in HOSTNAME:
+    CLUSTER_NAME = "cedar"
+elif "bel" in HOSTNAME:
+    CLUSTER_NAME = "beluga"
+
 HOME_DIR = os.path.expanduser("~")
 
 PATH_TO_LOGS = f"{HOME_DIR}/scratch/logs"
@@ -41,6 +50,7 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--disable_timer", action="store_true", help="To disable the timer.")
     parser.add_argument("--modules", nargs="*", required=False, help="Modules to be loaded to run the script.")
     parser.add_argument("--environment", type=str, required=False, help="Path to virtual environment")
+    parser.add_argument("--copy_disabled", action="store_true", help="Disable input file copying.")
     args = parser.parse_args()
 
     CPUS_PER_NODE = CPUS_PER_NODE_DICT[CLUSTER_NAME]
@@ -60,11 +70,22 @@ if __name__ == "__main__":
 
     timer = "/cvmfs/soft.computecanada.ca/nix/var/nix/profiles/16.09/bin/time -v" if not args.disable_timer else ""
 
-    command = args.command[0]
-    program = args.command[0].split("/")[-1]
+    command = args.command[0].split(" ")
+    program = command[0].split(" ")[0]
+    program_name = command[0].split("/")[-1]
     arguments = " ".join(args.command[1:])
-    task_name = args.task_name.replace(" ", "_") if args.task_name else program.split('.')[0].lstrip("./")
+    task_name = args.task_name.replace(" ", "_") if args.task_name else program_name.split('.')[0].lstrip("./")
 
+    index = 1
+    while True:
+        job_dir = f"{HOME_DIR}/scratch/jobs/" + f"{task_name}-{index}"
+        if os.path.exists(job_dir):
+            index += 1
+        else:
+            job_dir = "-".join(job_dir.split("-")[:-1]) + f"-{index}"
+            break
+
+    os.mkdir(job_dir)
 
     submission_script = (
         f"#!/bin/bash\n"
@@ -74,7 +95,7 @@ if __name__ == "__main__":
         f"#SBATCH --ntasks-per-node={process_per_node}\n"
         f"#SBATCH --cpus-per-task={cpus}\n"
         f"#SBATCH --mem={memory_requested}\n"
-        f"#SBATCH --output={PATH_TO_LOGS}/{task_name}-%j.out\n"
+        f"#SBATCH --output={job_dir}/{task_name}-%j.out\n"
     )
 
     if args.modules:
@@ -84,16 +105,27 @@ if __name__ == "__main__":
     if args.environment:
         submission_script += f"source {args.environment}/bin/activate\n"
 
-    submission_script += f"{timer} {command} {arguments}\n"
 
-    print("Created the script below:\n=======================================================================")
-    print(submission_script)
-    print("=======================================================================")
+    launch_script_path = f"{job_dir}/launch_{task_name}.sh"
 
-    launch_script_path = f"{PATH_TO_LAUNCH_SCRIPTS}/launch_{task_name}.sh"
+    launch_script_path = launch_script_path
 
-    if os.path.exists(launch_script_path):
-        launch_script_path = launch_script_path.rstrip(".sh") + "_copy" + ".sh"
+    final_args = []
+    for i, datafile in enumerate(command[1:]):
+        filepath = os.path.abspath(datafile)
+        if os.path.exists(filepath) and not args.copy_disabled:
+            new_file_name = os.path.join(job_dir, os.path.basename(datafile))
+            print(f"Moving {filepath} to {new_file_name}...")
+            shutil.copyfile(filepath, new_file_name)
+            final_args.append(new_file_name)
+        else:
+            final_args.append(command[i])
+
+    submission_script += f"{timer} {os.path.abspath(program)} {' '.join(final_args)}\n"
 
     with open(launch_script_path, "w") as launch_script:
         launch_script.write(submission_script)
+
+    print("\nCreated the script below:\n=======================================================================")
+    print(submission_script)
+    print("=======================================================================")

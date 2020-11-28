@@ -24,13 +24,17 @@ module load python/3.8
 
 # Paths
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.8.0/lib
+export LD_LIBRARY_PATH="$HOME/usr/lib:$HOME/usr/lib64"
 export LIBRARY_PATH="/usr/lib/nvidia-current:$LIBRARY_PATH"
-export PATH=$HOME/.local/neovim/bin:$HOME/local/bin:$PATH
+export PATH=$HOME/local/bin:$PATH
+export PATH="$HOME/usr/sbin:$HOME/usr/bin:$HOME/bin:$PATH"
+
 
 # Aliases
 alias ls='ls $LS_OPTIONS'
 alias vim="nvim"
 alias time="/cvmfs/soft.computecanada.ca/nix/var/nix/profiles/16.09/bin/time"
+alias exa="ls"
 
 # Other
 eval "$(dircolors -b)"
@@ -56,3 +60,5 @@ plugins=(
 
 source $OSH/oh-my-bash.sh
 export PATH=$PATH:$HOME/environments/computecanada
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
