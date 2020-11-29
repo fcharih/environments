@@ -18,9 +18,8 @@ export INPUTS="$SCRATCH/data/inputs"
 export OUTPUTS="$SCRATCH/data/outputs"
 
 # Modules
-module load openmpi/2.1.1
+module load openmpi/4.0.5
 module load boost
-module load gcc
 module load scipy-stack/2019a
 module load python/3.8
 
