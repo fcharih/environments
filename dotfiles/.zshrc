@@ -6,19 +6,20 @@ echo " /\\_/\\   DO IT FOR  /\\_/\\
 ########################################################################
 
 # General environment variables
-export LANG=en_US.UTF-8
-DEFAULT_USER=$USER
-HIST_STAMPS="dd/mm/yyyy"
+#export LANG=en_US.UTF-8
+#DEFAULT_USER=$USER
+#HIST_STAMPS="dd/mm/yyyy"
 
 # oh-my-zsh config
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
 plugins=(git docker)
+autoload -U compinit && compinit
 
 # Docker fix for container name completion after adding a flag
 zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
-
+source ~/.oh-my-zsh/oh-my-zsh.sh
 
 # Program-related environment variables
 export EDITOR=vim
@@ -26,7 +27,6 @@ export TERM=xterm-256color
 
 # Aliases
 alias vim='nvim'
-alias ls='exa'
 alias vimo='vim $(fzf)'
 
 # Functions
@@ -59,3 +59,7 @@ push_to_cubic() {
 export PATH="/usr/local/sbin:$PATH"
 export PATH=/usr/local/bin:$PATH
 alias fd=fdfind
+
+export PATH=/usr/local/go/bin:$PATH
+
+alias ls='exa'
