@@ -61,5 +61,9 @@ export PATH=/usr/local/bin:$PATH
 alias fd=fdfind
 
 export PATH=/usr/local/go/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=/usr/local/Cellar/python@3.8/3.8.6_2/bin:$PATH
 
 alias ls='exa'
+
+eval "$(starship init zsh)"

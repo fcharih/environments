@@ -44,7 +44,7 @@ let g:coc_global_extensions = [
       \"coc-toml",
       \"coc-rust-analyzer",
       \"coc-rls",
-      \"coc-python",
+      \"coc-pyright",
       \"coc-json",
       \"coc-css",
       \"coc-clangd",
