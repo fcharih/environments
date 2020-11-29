@@ -19,6 +19,8 @@ export OUTPUTS="$SCRATCH/data/outputs"
 
 # Modules
 module load openmpi/4.0.5
+module load singularity
+module load mpi4py
 module load boost
 module load scipy-stack/2019a
 module load python/3.8
