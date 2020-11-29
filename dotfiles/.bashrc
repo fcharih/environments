@@ -14,6 +14,8 @@ export LS_OPTIONS='--color=auto'
 #export SLURM_ACCOUNT=ctb-jrgreen
 #export SBATCH_ACCOUNT=$SLURM_ACCOUNT
 #export SALLOC_ACCOUNT=$SLURM_ACCOUNT
+export INPUTS="$SCRATCH/data/inputs"
+export OUTPUTS="$SCRATCH/data/outputs"
 
 # Modules
 module load openmpi/2.1.1
