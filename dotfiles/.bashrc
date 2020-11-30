@@ -11,6 +11,7 @@ fi
 # Environment variables
 export TERM=screen-256color
 export LS_OPTIONS='--color=auto'
+export EDITOR="nvim"
 #export SLURM_ACCOUNT=ctb-jrgreen
 #export SBATCH_ACCOUNT=$SLURM_ACCOUNT
 #export SALLOC_ACCOUNT=$SLURM_ACCOUNT
@@ -18,7 +19,7 @@ export INPUTS="$SCRATCH/data/inputs"
 export OUTPUTS="$SCRATCH/data/outputs"
 
 # Modules
-module load openmpi/4.0.5
+module load openmpi
 module load singularity
 module load mpi4py
 module load boost
@@ -27,10 +28,12 @@ module load python/3.8
 
 # Paths
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.8.0/lib
-export LD_LIBRARY_PATH="$HOME/usr/lib:$HOME/usr/lib64"
+export LD_LIBRARY_PATH="$HOME/usr/lib:$HOME/usr/lib64:$HOME/rpm/usr/lib"
 export LIBRARY_PATH="/usr/lib/nvidia-current:$LIBRARY_PATH"
 export PATH=$HOME/local/bin:$PATH
-export PATH="$HOME/usr/sbin:$HOME/usr/bin:$HOME/bin:$PATH"
+export PATH="$HOME/usr/sbin:$PATH"
+export PATH="$HOME/software/neovim/bin:$PATH"
+export PATH="$HOME/software/node/bin:$PATH"
 
 
 # Aliases
