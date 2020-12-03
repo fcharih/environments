@@ -28,6 +28,7 @@ call plug#begin('~/environments/dotfiles/vim/.vim/plugged')
   Plug 'peitalin/vim-jsx-typescript'
   Plug 'chrisbra/Colorizer'
   Plug 'moll/vim-bbye'
+  Plug 'jceb/vim-orgmode'
 call plug#end()
 
 

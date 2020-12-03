@@ -25,9 +25,14 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 export EDITOR=vim
 export TERM=xterm-256color
 
-# Aliases
+# Command aliases
 alias vim='nvim'
+alias emacs='emacs -nw'
 alias vimo='vim $(fzf)'
+alias ls='exa'
+
+# Shortcut aliases
+alias notebook='cd $HOME/Dropbox/Grad\ School/PhD/Notebook && emacs -nw notebook.org'
 
 # Functions
 tunnel() {
@@ -55,6 +60,10 @@ push_to_cubic() {
   scp -r $1 cubiccloud:$2
 }
 
+pretty_csv() {
+    perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
 export PATH=/usr/local/bin:$PATH
@@ -63,7 +72,7 @@ alias fd=fdfind
 export PATH=/usr/local/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=/usr/local/Cellar/python@3.8/3.8.6_2/bin:$PATH
+export PATH=/usr/local/Caskroom/emacs/27.1-1/Emacs.app/Contents/MacOS:$PATH
 
-alias ls='exa'
 
 eval "$(starship init zsh)"
