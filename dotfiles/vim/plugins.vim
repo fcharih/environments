@@ -49,7 +49,8 @@ let g:coc_global_extensions = [
       \"coc-json",
       \"coc-css",
       \"coc-clangd",
-      \"coc-bibtex"
+      \"coc-bibtex",
+      \"coc-explorer"
       \]
 set hidden
 

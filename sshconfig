@@ -21,11 +21,27 @@ Host dna28
 Host workstation
     Hostname 192.168.0.180
     User fcharih
+    ForwardX11 yes
+    ForwardX11Trusted yes
 
 Host biggarcluster
-    User mpiuser
-    HostName 134.117.104.160
+	User mpiuser
+	HostName 134.117.104.160
 
 Host cubiccloud
-    User fcharih
-    Hostname cu-bic.ca
+	User fcharih
+        Hostname cu-bic.ca
+	ForwardX11 yes
+	ForwardX11Trusted yes
+
+Host rpi
+	User fcharih
+	Hostname 192.168.0.144
+
+Host charih
+  User flexplicateur
+  Hostname charih.ddns.net
+
+Host charih-lan
+  User flexplicateur
+  Hostname 192.168.0.126
