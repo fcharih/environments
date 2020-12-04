@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: numpy-style function doc
+# uuid:
+# key: fdoc
+# condition: t
+# --
+"""Function description.
+
+Further explanations
+
+Parameters
+----------
+param1
+    The first parameter.
+param2
+    The second parameter.
+
+Returns
+-------
+bool
+    True if
+
+Raises
+------
+Exception
+    Raised if ...
+"""

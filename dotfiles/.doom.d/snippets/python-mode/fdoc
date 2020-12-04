@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: Numpy-style function docstring
+# key: fdoc
+# --
+"""Example function with types documented in the docstring.
+
+More thorough description of the function here.
+
+Parameters
+----------
+param1 : int
+The first parameter.
+param2 : str
+The second parameter.
+
+Returns
+-------
+bool
+True if successful, False otherwise.
+
+Raises
+-------
+Some exception
+"""
