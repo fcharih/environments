@@ -32,7 +32,7 @@ alias vimo='vim $(fzf)'
 alias ls='exa'
 
 # Shortcut aliases
-alias notebook='cd $HOME/Dropbox/Grad\ School/PhD/Notebook && emacs -nw notebook.org'
+alias notebook='cd $HOME/Dropbox/Grad\ School/PhD/Notebook && vim notebook.org'
 
 # Functions
 tunnel() {
@@ -61,7 +61,12 @@ push_to_cubic() {
 }
 
 pretty_csv() {
-    perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
+  perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
+}
+
+
+pretty_tsv() {
+  perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s\t | less  -F -S -X -K
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

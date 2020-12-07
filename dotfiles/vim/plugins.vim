@@ -29,6 +29,7 @@ call plug#begin('~/environments/dotfiles/vim/.vim/plugged')
   Plug 'chrisbra/Colorizer'
   Plug 'moll/vim-bbye'
   Plug 'jceb/vim-orgmode'
+  Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
 
