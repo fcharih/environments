@@ -76,7 +76,7 @@ alias fd=fdfind
 
 export PATH=/usr/local/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/.emacs/bin:$PATH
+export PATH=$HOME/.emacs.d/bin:$PATH
 export PATH=/usr/local/Cellar/python@3.8/3.8.6_2/bin:$PATH
 export PATH=/Applications/Emacs.app/Contents/MacOS/:$PATH
 
