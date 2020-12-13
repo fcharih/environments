@@ -99,3 +99,5 @@
 (add-hook 'typescript-mode-hook 'prettier-js-mode)
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'prettier-js-mode)
+
+(setenv "PATH" "/usr/local/bin:/Library/TeX/texbin/:$PATH" t)

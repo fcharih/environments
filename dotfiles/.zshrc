@@ -32,7 +32,7 @@ alias vimo='vim $(fzf)'
 alias ls='exa'
 
 # Shortcut aliases
-alias notebook='cd $HOME/Dropbox/Grad\ School/PhD/Notebook && vim notebook.org'
+alias notebook='cd $HOME/Dropbox/Grad\ School/PhD/Notebook && emacs -nw'
 
 # Functions
 tunnel() {
@@ -78,6 +78,5 @@ export PATH=/usr/local/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=/usr/local/Cellar/python@3.8/3.8.6_2/bin:$PATH
 export PATH=/Applications/Emacs.app/Contents/MacOS/:$PATH
-
 
 eval "$(starship init zsh)"
