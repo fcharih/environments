@@ -77,7 +77,7 @@ alias fd=fdfind
 export PATH=/usr/local/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=/usr/local/Cellar/python@3.8/3.8.6_2/bin:$PATH
-export PATH=/usr/local/Caskroom/emacs/27.1-1/Emacs.app/Contents/MacOS:$PATH
+export PATH=/Applications/Emacs.app/Contents/MacOS/:$PATH
 
 
 eval "$(starship init zsh)"

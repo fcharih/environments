@@ -30,8 +30,8 @@ call plug#begin('~/environments/dotfiles/vim/.vim/plugged')
   Plug 'moll/vim-bbye'
   Plug 'jceb/vim-orgmode'
   Plug 'dhruvasagar/vim-table-mode'
+  Plug 'jlanzarotta/bufexplorer'
 call plug#end()
-
 
 """""""""""""" coc.nvim """""""""""""""""
 let g:coc_global_extensions = [
@@ -51,6 +51,7 @@ let g:coc_global_extensions = [
       \"coc-css",
       \"coc-clangd",
       \"coc-bibtex",
+      \"coc-vimtex",
       \"coc-explorer"
       \]
 set hidden
